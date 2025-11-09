@@ -1,4 +1,4 @@
-#🛠️ SSG-Golang : Générateur de Site Statique Simple en Go
+# 🛠️ SSG-Golang : Générateur de Site Statique Simple en Go
 
 Ce projet est un générateur de site statique (Static Site Generator - SSG) minimaliste écrit en Go, conçu pour transformer des fichiers Markdown avec Front Matter YAML en pages HTML complètes, en utilisant des modèles Go natifs.
 
