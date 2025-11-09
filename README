@@ -1,0 +1,106 @@
+Parfait. Voici le contenu complet du `README.md` au format Markdown, prêt à être copié-collé.
+
+````markdown
+# 🛠️ SSG-Golang : Générateur de Site Statique Simple en Go
+
+Ce projet est un générateur de site statique (Static Site Generator - SSG) minimaliste écrit en Go, conçu pour transformer des fichiers Markdown avec Front Matter YAML en pages HTML complètes, en utilisant des modèles Go natifs.
+
+Il a été développé dans un but éducatif pour illustrer les étapes fondamentales de la création d'un SSG.
+
+---
+
+## ⚠️ Prérequis
+
+Vous devez impérativement avoir **Go (version 1.18 ou supérieure)** installé et configuré sur votre machine.
+
+Pour vérifier votre installation, ouvrez votre terminal et tapez :
+
+```bash
+go version
+````
+
+Si une version s'affiche, vous êtes prêt à commencer.
+
+-----
+
+## 🏗️ Architecture du Projet
+
+Le SSG-Golang suit une architecture standard Go :
+
+| Dossier | Rôle | Contenu |
+| :--- | :--- | :--- |
+| `cmd/ssg/` | **Point d'Entrée** | Contient le fichier `main.go` qui orchestre l'exécution du programme. |
+| `internal/processor/` | **Logique Métier** | Contient le cœur du traitement : lecture, extraction du Front Matter, conversion Markdown/HTML et fusion avec les modèles. |
+| `content/` | **Sources Markdown** | Vos fichiers `.md` sources. Chaque fichier doit contenir un bloc Front Matter YAML. |
+| `templates/` | **Modèles HTML** | Les squelettes HTML (`base.html`, `page.html`) qui définissent la mise en page. |
+| `public/` | **Sortie** | Le dossier généré et propre, contenant les fichiers HTML finaux. |
+
+-----
+
+## 🚀 Utilisation (Pour démarrer)
+
+### 1\. Cloner le projet et installer les dépendances
+
+```bash
+# Se placer dans le dossier racine
+cd ssg-golang
+
+# Installer la librairie Markdown et YAML
+go get [github.com/gomarkdown/markdown](https://github.com/gomarkdown/markdown)
+go get gopkg.in/yaml.v3
+```
+
+### 2\. Exécuter la génération
+
+Pour lancer le processus de conversion et générer le site dans le dossier `public/`, exécutez le point d'entrée :
+
+```bash
+go run cmd/ssg/main.go
+```
+
+Si l'exécution est réussie, le terminal affichera un log similaire à :
+
+```
+--- Démarrage du Générateur de Site Statique ---
+Nettoyage du dossier de sortie: public
+Recherche de fichiers dans: content
+Généré avec succès: public\index.html (Titre: Accueil du SSG Go)
+Généré avec succès: public\about.html (Titre: À Propos du Projet)
+--- Génération terminée avec succès! ---
+```
+
+-----
+
+## ✍️ Créer une Nouvelle Page
+
+Pour ajouter une nouvelle page, suivez ces étapes :
+
+1.  Créez un nouveau fichier Markdown dans `content/`, par exemple `contact.md`.
+2.  Ajoutez **OBLIGATOIREMENT** un bloc de Front Matter YAML au début du fichier :
+
+<!-- end list -->
+
+```markdown
+---
+title: Contactez-nous
+auteur: [Votre Nom]
+---
+
+Ceci est le contenu de la page contact.
+```
+
+3.  Relancez le générateur (`go run cmd/ssg/main.go`).
+4.  Le nouveau fichier `public/contact.html` sera généré.
+
+-----
+
+## ⚙️ Explication de la Logique (Le Fichier `processor.go`)
+
+La fonction `ProcessFile` gère trois grandes étapes :
+
+1.  **Extraction des Métadonnées :** Elle utilise `strings.Index` pour trouver les délimiteurs `---` et sépare le Front Matter du contenu Markdown. Elle utilise ensuite le package `yaml.v3` pour décoder le bloc Front Matter dans la structure `PageData.Metadata`.
+2.  **Conversion :** Elle utilise `markdown.ToHTML` sur le contenu Markdown restant pour le transformer en HTML brut.
+3.  **Fusion :** Elle utilise `html/template` pour charger les modèles (`base.html` et `page.html`) et exécute le modèle `base` en injectant l'objet `PageData` contenant à la fois les métadonnées dynamiques et le contenu HTML converti.
+
+
+# PAR SABRINA ELOUNDOU
